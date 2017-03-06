@@ -1,0 +1,67 @@
+<html>
+<head>
+  <title>Delux</title>
+  <style type="text/css">
+    .form-field {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Delux</h1>
+  <div>
+    <p>Basic modes:</p>
+    <button class="btn-off">Turn off</button>
+    <button class="btn-available">Available</button>
+    <button class="btn-busy">Busy</button>
+    <button class="btn-random">Random</button>
+    <br/>
+    <p>Animated sequences:</p>
+    <button class="btn-disco">Disco!</button>
+    <button class="btn-france">France!</button>
+    <button class="btn-meeting">Meeting timer!</button><br/>
+  </div>
+  <div class="form-settings">
+    <h2>Settings</h2>
+    <div class="form-field">
+      <label>
+        Brightness<br/>
+        <input type="range" min="0" max="1" step="0.1" value="1" data-config="brightness" data-config-type="float" />
+      </label>
+    </div>
+    <div class="form-field">
+      <label>
+        Speed<br/>
+        <input type="range" min="0" max="255" step="1" value="127" data-config="speed" data-config-type="int" />
+      </label>
+    </div>
+    <div class="form-field">
+      <label>
+        Meeting length (minutes)<br/>
+        <input type="number" min="5" max="60" step="1" value="45" data-config="meeting.totalTime" data-config-type="int" />
+      </label>
+    </div>
+    <div class="form-field">
+      <label>
+        Meeting alternate period (minutes)<br/>
+        <input type="number" min="5" max="60" step="1" value="5" data-config="meeting.alternateTime" data-config-type="int" />
+        <p>
+          <small>The alternate time is a visual indicator to mark when the speaker or subject should change</small>
+        </p>
+      </label>
+    </div>
+    <div class="form-field">
+      <label>
+        Meeting warning time (minutes before end)<br/>
+        <input type="number" min="5" max="60" step="1" value="5" data-config="meeting.warnTime" data-config-type="int" />
+      </label>
+    </div>
+    <div>
+      <button class="btn-save">
+        Save settings
+      </button>
+    </div>
+  </div>
+  <script type="text/javascript" src="js/index.js"></script>
+</body>
+</html>

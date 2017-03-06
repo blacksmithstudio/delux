@@ -186,7 +186,7 @@ export default function App (env, callback) {
      */
     '/meeting': (req, res) => {
       let {
-        time,
+        totalTime,
         alternateTime,
         warnTime,
         color,
@@ -196,7 +196,7 @@ export default function App (env, callback) {
         animated
       } = req.query
       let options = {
-        time,
+        totalTime,
         alternateTime,
         warnTime,
         color,

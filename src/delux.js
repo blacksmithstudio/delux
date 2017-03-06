@@ -10,9 +10,9 @@
 /**
  * Dependencies
  */
-import Luxafor from 'luxafor-api'
-import { merge } from 'lodash'
-import Color from 'color'
+const Luxafor = require('luxafor-api')
+const merge = require('lodash').merge
+const Color = require('color')
 
 /**
  * Constants
@@ -37,7 +37,7 @@ const TARGET_EACH_BOTTOM = [TARGET_4, TARGET_5, TARGET_6]
  * @returns {Delux}
  * @constructor
  */
-export default function Delux (settings) {
+function Delux (settings) {
   /**
    * Settings for the Delux instance
    *
@@ -62,20 +62,101 @@ export default function Delux (settings) {
     speed: 20,
 
     /**
-     * Default sequence cycle speed
-     *
-     * @type {Number} in milliseconds
-     * @default 200
+     * Default sequence options
      */
-    sequenceCycleSpeed: 200,
+    sequence: {
+      /**
+       * Loop the sequence
+       *
+       * @type {Boolean}
+       */
+      loop: false,
+
+      /**
+       * The specific information for the sequence's steps
+       * Each entry in the steps should be a single {Array} which corresponds to `Delux.fadeTo` function
+       * Alternatively, the step can be a function which returns an {Array} to apply to the `Delux.fadeTo` function
+       *
+       * @type {Array|Function}
+       */
+      steps: [],
+
+      /**
+       * The cycle speed for the sequence's steps
+       *
+       * @type {Number} in milliseconds
+       */
+      cycleSpeed: 200
+    },
 
     /**
-     * Loop sequences by default
-     *
-     * @type {Boolean}
-     * @default false
+     * Default meeting options
      */
-    sequenceLoop: false,
+    meeting: {
+      /**
+       * The time of the total meeting.
+       *
+       * @type {Number} in minutes
+       * @default 45
+       */
+      totalTime: 45,
+
+      /**
+       * The time of alternations, to signal when people should change what they talk about or to move on from the current discussion.
+       *
+       * @type {Number} in minutes
+       * @default 0
+       */
+      alternateTime: 0,
+
+      /**
+       * The time before the end of the meeting in which people should be warned it will end soon.
+       *
+       * @type {Number} in minutes
+       * @default 5
+       */
+      warnTime: 5,
+
+      /**
+       * The color to signify the meeting is in session.
+       *
+       * @type {Hex|String}
+       * @default #00FF00
+       */
+      color: '#00FF00',
+
+      /**
+       * The color to signify an alternation within meeting. This will swap between the regular color at each alternate intervals.
+       *
+       * @type {Hex|String}
+       * @default #00F
+       */
+      alternateColor: '#0000FF',
+
+      /**
+       * The color to signify an alternation within meeting. This will swap between the regular color at each alternate intervals.
+       *
+       * @type {Hex|String}
+       * @default #00F
+       */
+      warnColor: '#FFFF00',
+
+      /**
+       * The color to signify an alternation within meeting. This will swap between the regular color at each alternate intervals.
+       *
+       * @type {Hex|String}
+       * @default #00F
+       */
+      endColor: '#FF0000',
+
+      /**
+       * Whether to animate each stage, or not.
+       *
+       * @type {Boolean}
+       * @default true
+       */
+      animated: true
+    },
 
     /**
      * LED target settings
@@ -188,6 +269,11 @@ export default function Delux (settings) {
   return this
 }
 
+/**
+ * The prototype object to assign to new Delux instances
+ *
+ * @type {Object}
+ */
 Delux.prototype = {
   /**
    * Get a color with any necessary modifications already made (e.g. brightness, etc.)
@@ -203,7 +289,7 @@ Delux.prototype = {
       if (Object.keys(this._settings.presets).includes(color)) {
         return this.getColor(this._settings.presets[color].color || '#fff')
 
-      // Else make color compatible with #RRGGBB notation
+        // Else make color compatible with #RRGGBB notation
       } else {
         color = `#${color}`
       }
@@ -249,7 +335,7 @@ Delux.prototype = {
   },
 
   /**
-   * Check to see if Luxafor API call produced an error and deal with it on the Delux instance
+   * Check to see if Luxafor API call produced an error and deal with it on the Delux instance.
    *
    * @param {Mixed} status
    */
@@ -399,33 +485,10 @@ Delux.prototype = {
    * @returns {Delux}
    */
   setSequence (options) {
-    console.log('Delux.setSequence', ...arguments)
+    // console.log('Delux.setSequence', ...arguments)
 
     // Default options
-    let _options = merge({
-      /**
-       * Loop the sequence
-       *
-       * @type {Boolean}
-       */
-      loop: this._settings.sequenceLoop,
-
-      /**
-       * The specific information for the sequence's steps
-       * Each entry in the steps should be a single {Array} which corresponds to `Delux.fadeTo` function
-       * Alternatively, the step can be a function which returns an {Array} to apply to the `Delux.fadeTo` function
-       *
-       * @type {Array|Function}
-       */
-      steps: [],
-
-      /**
-       * The cycle speed for the sequence's steps
-       *
-       * @type {Number} in milliseconds
-       */
-      cycleSpeed: this._settings.sequenceCycleSpeed
-    }, options)
+    let _options = merge({}, this._settings.sequence, options)
 
     // Error
     if (!_options.steps) {
@@ -484,7 +547,7 @@ Delux.prototype = {
           // Fade to the nextStep details
           this.fadeTo(...nextStep)
 
-        // Stop the sequence on errors
+          // Stop the sequence on errors
         } else {
           // console.log('Delux.setSequence: Error during sequence', this._error)
           this.off()
@@ -619,71 +682,7 @@ Delux.prototype = {
   setMeeting (options) {
     // console.log('Delux.setMeeting', ...arguments)
 
-    let _options = {
-      /**
-       * The time of the total meeting.
-       *
-       * @type {Number} in minutes
-       * @default 45
-       */
-      time: parseInt(options.time, 10) || 45,
-
-      /**
-       * The time of alternations, to signal when people should change what they talk about or to move on from the current discussion.
-       *
-       * @type {Number} in minutes
-       * @default 0
-       */
-      alternateTime: parseInt(options.alternateTime, 10) || 0,
-
-      /**
-       * The time before the end of the meeting in which people should be warned it will end soon.
-       *
-       * @type {Number} in minutes
-       * @default 5
-       */
-      warnTime: parseInt(options.warnTime, 10) || 5,
-
-      /**
-       * The color to signify the meeting is in session.
-       *
-       * @type {Hex|String}
-       * @default #00FF00
-       */
-      color: '#00FF00',
-
-      /**
-       * The color to signify an alternation within meeting. This will swap between the regular color at each alternate intervals.
-       *
-       * @type {Hex|String}
-       * @default #00F
-       */
-      alternateColor: '#0000FF',
-
-      /**
-       * The color to signify an alternation within meeting. This will swap between the regular color at each alternate intervals.
-       *
-       * @type {Hex|String}
-       * @default #00F
-       */
-      warnColor: '#FFFF00',
-
-      /**
-       * The color to signify an alternation within meeting. This will swap between the regular color at each alternate intervals.
-       *
-       * @type {Hex|String}
-       * @default #00F
-       */
-      endColor: '#FF0000',
-
-      /**
-       * Whether to animate each stage, or not.
-       *
-       * @type {Boolean}
-       * @default true
-       */
-      animated: (typeof options.animated === 'undefined' ? true : options.animated)
-    }
+    let _options = merge({}, this._settings.meeting, options)
 
     // console.log('Delux.setMeeting._options', JSON.stringify(_options))
 
@@ -694,7 +693,7 @@ Delux.prototype = {
     let currentTime = 0
     // -- Convert time to seconds
     let alternateTime = _options.alternateTime * 60
-    let endTime = _options.time * 60
+    let endTime = _options.totalTime * 60
     let warnTime = endTime - (_options.warnTime * 60)
 
     // Start!
@@ -729,7 +728,7 @@ Delux.prototype = {
             this.setTo(currentColor)
           }
 
-        // Warn meeting is about to end
+          // Warn meeting is about to end
         } else if (currentTime >= warnTime && currentTime < endTime) {
           // console.log(`Warning: meeting will end in ${_options.warnTime} minutes`)
 
@@ -748,7 +747,7 @@ Delux.prototype = {
             }
           }
 
-        // Meeting has ended!
+          // Meeting has ended!
         } else if (currentTime >= endTime) {
           // console.log('Meeting has ended!')
 
@@ -782,3 +781,5 @@ Delux.prototype = {
     })
   }
 }
+
+module.exports = Delux
