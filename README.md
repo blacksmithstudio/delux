@@ -38,8 +38,6 @@ To demo the Electron desktop app with your Luxafor device, type into the command
 
     npm run demo:electronapp
 
-> Note: The electron app demo is currently on the TODO list...
-
 ## License
 
                DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
