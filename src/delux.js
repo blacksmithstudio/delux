@@ -210,11 +210,15 @@ function Delux (settings) {
     presets: {
       available: {
         target: TARGET_TOP,
-        color: '#0F0'
+        color: '#00FF00'
       },
       busy: {
         target: TARGET_TOP,
-        color: '#F00'
+        color: '#FFFF00'
+      },
+      dnd: {
+        target: TARGET_TOP,
+        color: '#FF0000'
       }
     },
 
@@ -608,6 +612,15 @@ Delux.prototype = {
    */
   setBusy () {
     return this.off().setColor('busy')
+  },
+
+  /**
+   * Set to Do Not Disturb
+   *
+   * @return {Delux}
+   */
+  setDoNotDisturb () {
+    return this.off().setColor('dnd')
   },
 
   /**

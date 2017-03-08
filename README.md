@@ -24,7 +24,8 @@ To demo the Delux functionality with your Luxafor device, type into the command 
 
 Then open [http://localhost:3000](http://localhost:3000) in your browser. You can then visit these endpoints:
  * [/available](http://localhost:3000/available): Set yourself available
- * [/busy](http://localhost:3000/busy): Set yourself busy
+ * [/busy](http://localhost:3000/available): Set yourself to busy
+ * [/dnd](http://localhost:3000/dnd): Set yourself to "Do Not Disturb" mode
  * [/color](http://localhost:3000/color?color=#ffffff): Set a specific color (use query params to set the color, e.g. [`/color?color=#ffffff`](http://localhost:3000/color?color=#ffffff))
  * [/random](http://localhost:3000/random): Set to a random colour
  * [/meeting](http://localhost:3000/meeting): Set to meeting mode (45 minute long meeting, with warning 5 minutes before it ends)

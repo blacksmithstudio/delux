@@ -14,6 +14,7 @@
     <button class="btn-off">Turn off</button>
     <button class="btn-available">Available</button>
     <button class="btn-busy">Busy</button>
+    <button class="btn-dnd">Do Not Disturb</button>
     <button class="btn-random">Random</button>
     <br/>
     <p>Animated sequences:</p>
@@ -23,6 +24,11 @@
   </div>
   <div class="form-settings">
     <h2>Settings</h2>
+    <div>
+      <button class="btn-save">
+        Save settings
+      </button>
+    </div>
     <div class="form-field">
       <label>
         Brightness<br/>
@@ -55,11 +61,6 @@
         Meeting warning time (minutes before end)<br/>
         <input type="number" min="5" max="60" step="1" value="5" data-config="meeting.warnTime" data-config-type="int" />
       </label>
-    </div>
-    <div>
-      <button class="btn-save">
-        Save settings
-      </button>
     </div>
   </div>
   <script type="text/javascript" src="js/index.js"></script>

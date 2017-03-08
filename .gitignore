@@ -2,6 +2,10 @@
 !.gitignore
 .idea
 
+### Electron Builds ###
+build
+dist
+
 ### Node template
 # Logs
 logs

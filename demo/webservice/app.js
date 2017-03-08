@@ -90,6 +90,17 @@ export default function App (env, callback) {
     },
 
     /*
+     * Set to Do Not Disturb
+     */
+    '/dnd': (req, res) => {
+      app.modules.delux.setDoNotDisturb()
+      res.json({
+        mode: 'busy',
+        status: app.modules.delux.getStatus()
+      })
+    },
+
+    /*
      * Set to flash
      */
     '/flash': (req, res) => {

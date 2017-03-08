@@ -7,6 +7,7 @@ const ipcRenderer = require('electron').ipcRenderer
 let buttons = {
   available: document.querySelector('.btn-available'),
   busy: document.querySelector('.btn-busy'),
+  dnd: document.querySelector('.btn-dnd'),
   random: document.querySelector('.btn-random'),
   disco: document.querySelector('.btn-disco'),
   france: document.querySelector('.btn-france'),

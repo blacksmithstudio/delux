@@ -48,6 +48,12 @@ let cmds = {
       appDelux.setBusy()
     }
   },
+  dnd () {
+    if (appDelux) {
+      configState.set('mode', 'dnd')
+      appDelux.setDoNotDisturb()
+    }
+  },
   random () {
     if (appDelux) {
       configState.set('mode', 'random')
@@ -104,6 +110,11 @@ app.on('ready', function () {
         cmds.busy()
       }
     },{
+      label: 'Do Not Disturb',
+      click () {
+        cmds.dnd()
+      }
+    },{
       label: 'Random',
       click () {
         cmds.random()
@@ -158,6 +169,9 @@ ipcMain.on('set-available', function () {
 })
 ipcMain.on('set-busy', function () {
   cmds.busy()
+})
+ipcMain.on('set-dnd', function () {
+  cmds.dnd()
 })
 ipcMain.on('set-random', function () {
   cmds.random()
